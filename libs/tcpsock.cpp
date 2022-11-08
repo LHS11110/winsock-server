@@ -28,7 +28,7 @@ void TCP::warning(const char* msg)
 }
 
 TCP::TCP()
-	: h_sock(INVALID_SOCKET), backlog(0)
+	: h_sock(socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)), backlog(0)
 {
 	addr_info = address();
 	blocking();
@@ -111,6 +111,11 @@ void TCP::operator<<(const address& _addr_info)
 void TCP::operator>>(TCP& _tcp)
 {
 	m_tcpmutex.lock();
+	if (_tcp.h_sock != INVALID_SOCKET)
+	{
+		closesocket(_tcp.h_sock);
+		_tcp.h_sock = INVALID_SOCKET;
+	}
 	_tcp.h_sock = accept(h_sock, (sockaddr*)&_tcp.addr_info.addr, &_tcp.addr_info.addr_len);
 	m_tcpmutex.unlock();
 }
