@@ -61,10 +61,10 @@ public:
 	void backlog_set(int);
 
 	friend class address;
-	friend class wsaManager;
+	friend class WSA;
 };
 
-class wsaManager
+class WSA
 {
 protected:
 	bool check;
@@ -73,8 +73,8 @@ public:
 	WSADATA wsaData;
 
 public:
-	wsaManager();
-	~wsaManager();
+	WSA();
+	~WSA();
 
 	void start();
 	void stop();

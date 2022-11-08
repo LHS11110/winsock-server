@@ -214,19 +214,19 @@ void TCP::backlog_set(int int32)
 	m_tcpmutex.unlock();
 }
 
-wsaManager::wsaManager()
+WSA::WSA()
 	: wsaData(), check(false)
 {
 
 }
 
-wsaManager::~wsaManager()
+WSA::~WSA()
 {
 	if (check)
 		WSACleanup();
 }
 
-void wsaManager::start()
+void WSA::start()
 {
 	if (check)
 	{
@@ -238,7 +238,7 @@ void wsaManager::start()
 		TCP::error("WSAStartup Error\n");
 }
 
-void wsaManager::stop()
+void WSA::stop()
 {
 	check = false;
 	WSACleanup();
