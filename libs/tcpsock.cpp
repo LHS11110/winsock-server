@@ -212,11 +212,21 @@ bool TCP::sock_check()
 	return h_sock != INVALID_SOCKET;
 }
 
-void TCP::backlog_set(int int32)
+void TCP::set_backlog(int int32)
 {
 	m_tcpmutex.lock();
 	backlog = int32;
 	m_tcpmutex.unlock();
+}
+
+int TCP::getopt(int level, int optname, char* optval, int * optlen)
+{
+	return getsockopt(h_sock, level, optname, optval, optlen);
+}
+
+int TCP::setopt(int level, int optname, const char* optval, int optlen)
+{
+	return setsockopt(h_sock, level, optname, optval, optlen);
 }
 
 WSA::WSA()

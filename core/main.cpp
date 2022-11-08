@@ -1,38 +1,31 @@
 #include <iostream>
 #include "../libs/tcpsock.hpp"
+#include "../libs/env.hpp"
 using namespace std;
 
-int StoI(const char* str)
+int StoI(const wchar_t* str)
 {
-	const size_t strSize = strlen(str) + 1;
 	int int32 = 0;
-	for (int i = 0; i < strSize; i++)
-		int32 = (int32 * 10) + str[i] - '0';
+	for (int i = 0; str[i] != L'\0'; i++)
+		int32 = (int32 * 10) + str[i] - L'0';
 	return int32;
 }
 
-const wchar_t* GetWC(const char* c)
+int _main(void)
 {
-	size_t cSize = strlen(c) + 1;
-	wchar_t* wc = new wchar_t[cSize];
-	mbstowcs_s(&cSize, wc, cSize, c, cSize);
+	WSA wsa;
+	wsa.start();
+	ENV env;
+	const wchar_t* ip = env[L"IP"];
+	const wchar_t* port = env[L"PORT"];
 
-	return wc;
-}
-
-int main(void)
-{
-	wsaManager manager;
-	manager.start();
+	wcout << "ip: " << ip << "\nport: " << port << '\n';
 	TCP listener;
-	const wchar_t* ip = GetWC(getenv("IP"));
-	listener << address(ip, StoI(getenv("PORT")));
-	delete[] ip;
-	TCP clnt;
-	listener >> clnt;
-	clnt.write("Hi!", 3);
-	clnt.close();
+	listener << address(ip, StoI(port));
+
 	listener.close();
+	delete[] ip;
+	delete[] port;
 
 	return 0;
 }

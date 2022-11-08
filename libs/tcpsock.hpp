@@ -58,7 +58,9 @@ public:
 	int write(const char* msg, int msg_len);
 	static int getErrorCode();
 	bool sock_check();
-	void backlog_set(int);
+	void set_backlog(int);
+	int getopt(int level, int optname, char* optval, int * optlen);
+	int setopt(int level, int optname, const char* optval, int optlen);
 
 	friend class address;
 	friend class WSA;
